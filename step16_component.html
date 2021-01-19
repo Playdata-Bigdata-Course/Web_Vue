@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>step16_component</title>
+</head>
+<body>
+        <h2>Component 기초 문법 습득</h2>
+
+        1. 비용절감 = 개발속도 향상 <br>
+        2. vue.js 관점에선 다수 사용되는 UI를 재사용 가능한 Component로 구성 가능한 문법제시 <br>
+
+        <br><hr><br>
+        1. step01: 맛보기, component 구조 및 문법 이해하기 <br>
+       <!-- View-->
+        <div id="app1-1">
+            <!-- 우리가 직접 개발하는 tag를 사용(사용자 정의 tag - component)-->
+            <g-com></g-com>
+            <l-com></l-com>
+        </div>
+        <br><hr><br>
+        <div id="app1-2">
+            <g-com></g-com>
+        </div>
+        
+        <script>
+            //전역 컴포넌트
+            //Vue.component('tag명', {tag의 내용});
+            Vue.component('g-com', {
+                template: `<div>전역 컴포넌트 - 다양한 html로 구성이라 간주
+                    <button onclick="alert(1)">클릭</button>
+                    </div>`
+            });
+            
+            new Vue({
+                el:"#app1-1",
+                //로컬 컴포넌트 
+                components:{
+                    'l-com':{
+                        template: '<div>로컬 컴포넌트</div>'
+                    }
+                }
+            });
+
+            new Vue({
+                el:"#app1-2"
+            });
+        </script>
+        <br><hr><br>
+        2. step02 - 재사용 가능한 구조가 복잡한 html UI인 경우 java script의 view template 처리보다 html body 구분에 개발 후에 활용 권장 <br>
+        -template tag 사용 권장
+        <br><hr><br>
+        <template id="btncom">
+            <div>
+                <button>btn1</button>
+                <button>btn2</button>
+                <button>btn3</button>
+            </div>
+        </template>
+        <div id="app2">
+            <btn-com></btn-com>
+        </div>
+        <script>
+            Vue.component('btn-com',{
+                template:'#btncom'
+            });
+            new Vue({
+                el:'#app2'
+            });
+        </script>
+        <br><hr color="red" size="15"><br>
+        3. props 라는 속성은 부모가 자식에게 데이터 공유시 사용하는 속성 <br>
+        <template id="btncom2">
+            <div>
+                <button>{{message}}</button> 부모가 제공한 데이터를 props에서 선언된 변수가 받아서 출력
+                <button>{{name}}</button> -->
+                <input type="text" v-model="m">-    <input type="text" v-model="n">
+            </div>
+        </template>
+        <!-- 입력 form 적용해서 입력되는 데이터가 버튼 value값으로 출력되게 변경-->
+        <div id="app3"> <!-- 부모-->
+            <!-- message="안녕" : props로 선언되어 있는 변수명에 부모 영역에서 데이터를 제공(대입)-->
+            <btn-com3 message="안녕" name="호준양"></btn-com3> <!-- 자식-->
+        </div>
+
+        <script>
+            Vue.component('btn-com3',{ //부모 view에 포함된 자식 view(자식 컴포넌트)
+                template: '#btncom2',
+                props:  ['message', 'name'] //이 변수명으로 부모가 제공해주는 데이터를 받겠다는 설정
+            });
+            new Vue({ //div id="app3" view 즉 부모
+                el:"#app3",
+                data: {
+                    m:"하위",
+                    n:"준호양"
+                }
+            });
+        </script>
+</body>
+</html>

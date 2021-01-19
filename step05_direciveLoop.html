@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>step05_direciveLoop</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <h2>v-for directive</h2>
+
+    1. 반복해서 화면에 데이터를 렌더링 할 수 있는 directive <br>
+    <!-- View-->
+
+    <div id="app">
+        <dl>
+            <dt>1. java script 리터럴 객체의 데이터값 반복해서 렌더링</dt>
+            <dd>
+                <!--반복문 자체 반환 데이터 순서 : 값 -> property명(변수명, 속성명, key명)-->
+                <li v-for="(value, key, index) in alias">
+                    {{index +1}} - 속성명 : {{key}} , 값 : {{value}}
+                </li>
+            </dd>
+            <hr>
+
+            <dd>
+                <!-- 반복문 자체 반환 데이터 순서 : 값 -> property-->
+                <li v-for="(key, value) in alias">
+                    속성명 : {{key}} , 값 :{{value}}
+                </li>
+            </dd>
+
+            <hr>
+            <dt>2. 배열 데이터를 렌더링</dt>
+            <dd>
+                <!-- 배열인 경우 반복문 내부에서 반환되는 값은 값 -> 배열요소(값)의 index-->
+                <li v-for="(value, keyindex) in favorite">
+                    {{keyindex + 1}}-{{value}}
+                </li>
+            </dd>
+
+            <hr>
+            <dt>3. 배열 데이터 + 조건식(v-if, ==)을 반영해서 렌더링</dt>
+            <dd>
+                <!-- 배열인 경우 반복문 내부에서 반환되는 값은 값 -> 배열요소(값)의 index-->
+                <li v-for="(value, keyindex) in coffees" v-if="value=='모카'">
+                    선호하는 커피 = {{value}}
+                </li>
+            </dd>
+
+            <hr>
+            <dt>4.emp의 firstName, lastName value값 렌더링</dt>
+            <dd>
+                <!-- ? emp의 firstName, lastName value값 렌더링-->
+                <li v-for="(value, keyindex) in emp">
+                    {{keyindex}}-{{value.firstName}} {{value.lastName}}
+
+                </li>
+            </dd>
+
+            <hr>
+            <dt>5.key값들만  렌더링</dt>
+            <dd>
+                <!-- ? emp의 firstName, lastName value값 렌더링-->
+                <div v-for="employee in emp">
+                    <li v-for="(value, key) in employee">{{key}}</li>
+                </div>
+            </dd>
+
+            <hr>
+            <dd>
+                <dt> 6. template tag : 여러 element들을 묶어서 관리 및 표현 반복렌더링시에 권장, 요소들 그룹핑시 주로 사용</dt>
+                <template v-for="(value, key) in favorite">
+                    <li> 취미 : {{value}} </li>
+                    <!-- keyindex가 짝수일때 수평선 추가 -->
+                    <hr v-if="key%2 == 0">
+                </template>
+            </dd>
+        </dl>
+    </div>
+    <script>
+        //model
+        let model = {
+            favorite: ["코딩", "코딩영상보기", "빈둥거리면서 알고리즘 생각하기", "코딩으로 몽상하기"],
+            coffees: ["아메리카노", "라떼", "돌체라떼", "모카"],
+            alias: {    //객체
+                name: "권김김오민재민건웅",
+                nickName: "IOSANDROID Human"
+            },
+            emp: [
+                { "firstName": "John", "lastName": "Doe" },
+                { "firstName": "Anna", "lastName": "Smith" },
+                { "firstName": "Peter", "lastName": "Jones" }
+            ]
+        }
+        //ViewModel
+        let vm = new Vue({
+            el: "#app",
+            data: model
+        });
+
+    </script>
+</body>
+
+</html>

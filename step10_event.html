@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+   <a href="https://www.w3schools.com/jsref/met_element_addeventlistener.asp" 
+        target="parent">
+    이벤트 처리 참조 사이트
+   </a>
+   <br><hr><br>
+
+   <h3>Vue 기반의 envent 처리 학습</h3>
+   <div id="app">
+        <dl>
+            <dt>1. 버튼 클릭시에 이벤트 발생</dt>
+            <dd>v-on 이라는 directive 사용</dd>
+            <dd>v-on과 @표현식은 동일</dd>
+            <dd>
+                <button v-on:click="amount+=100">100 더하기</button>
+                <button v-on:click="amount-=50">50빼기</button>
+                <button @click="amount+=1000">1000더하기</button>
+            </dd>
+            <dd>
+                <input type="text" v-model="amount">
+            </dd>
+        </dl>
+        <!-- 
+            잔액이 0 미만인 경우 인출 불가 메세지 출력(alert)
+            입금 후에는 입금 완료라는 메세지 출력(alert)
+            입출금에 해당하는 별도의 메소드 구현 후에 호출(callback)
+            구현을 위한 설계
+                조건 : 입출하고자 하는 계좌의 잔액은 0보다 크거나 같다 
+
+        -->
+        <dl>
+            <dt>2. 예금, 인출 단 -통장 아님</dt>
+            <dd>
+                <input type="number" v-model="money"> 입출금 금액
+                <button v-on:click="deposit">예금</button>
+                <button v-on:click.once="withdraw">출금</button>
+            </dd>
+            <dd>
+                통장잔액 : {{balance}}
+            </dd>
+        </dl>
+    </div>
+   <script>
+       new Vue({
+           el : "#app",
+           data : {
+               amount : 0,
+               balance : 0,
+               money : 0
+           },
+           methods :{
+            deposit : function(){
+                //alert(this.balance);
+                //alert(this.money);
+                this.balance += parseInt(this.money);
+                this.money="";
+                alert("입금완료")
+            },
+            withdraw: function(){
+                // alert(typeof(this.balance)); //number
+                // alert(typeof(this.money));  //string
+                // alert(typeof(parseInt(this.money))); //number
+                if(this.balance < this.money){
+                    alert("잔액 부족입니다");
+                }else{
+                    this.balance -= parseInt(this.money);
+                    alert("출금완료")
+                }
+                this.money="";
+            }
+        }, 
+    });
+   </script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <button class="btn btn_toggle" onclick="getData()">click</button>
+        <div>
+            <table border=1>
+                <tr><th>EmployeeId</th><th>firstName</th><th>lastName</th><th>email</th><th>phoneNumber</th><th>hireDate</th><th>jobId</th><th>salary</th><th>commissionPct</th><th>managerId</th><th>departmentId</th></tr>
+                <tr v-for="(val, key) in emp">
+                    <td>{{val.employee_id}}</td><td>{{val.first_name}}</td><td>{{val.last_name}}</td><td>{{val.email}}</td><td>{{val.phone_number}}</td><td>{{val.hire_date}}</td><td>{{val.job_id}}</td><td>{{val.salary}}</td><td>{{val.commission_pct}}</td><td>{{val.manager_id}}</td><td>{{val.department_id}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <script>
+        let model = {
+            emp : []
+        }
+        let vm = new Vue({
+            el: "#app",
+            data: model
+        })
+        function getData() {
+            axios.get('http://localhost/step11_BackLogic/index.jsp')
+                .then(function (response) {
+                    for(let val in response.data){
+                        model.emp.push(response.data[val]);
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+    </script>
+</body>
+</html>
+
+
+<!-- 
+구현 로직
+1. id/pw가 hr인 오라클 계정의 employees table 검색
+    -all query
+2. 서비스 로직
+    1. 검색된 모든 자료를 다 출력
+    2. employees table의 특정 컬럼을 스스로 지정해서 필터링 하고자 하는 로직 선별
+    3. 입력시 동적으로 합? 평균? 등등 수치연산
+    ...
+3. 제약
+    1. db의 검색 결과는 반드시 json 포멧으로 client에게 응답
+    2. json 관련 library 사용 필수
+    3. mvc pattern 미고려해도 됨, 프로젝트 시에는 필수 
+        - jsp 하나로 다 처리해도 됨
+    4. vue.js로 화면 단 처리
+    5. back end는 반드시 eclipse로 별도의 server
+    6. front end는 반드시 vsc로 별도의 server
+        5,6번 서버가 다.르.다
+        도메인이 다르다
+        소통의 해결책 : CORS
+    7. 비동기 필수 
+
+-->

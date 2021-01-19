@@ -1,0 +1,85 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <h3>자식 컴포넌트에서 부모 컴포넌트로 데이터 제공해주는 기술</h3>
+    1. 부모 -> 자식 : props <br>
+    2. 자식 -> 부모 : $emit() <br>
+    3. 버튼 클릭시 데이터가 출력되는 UI
+    <br><hr><br>
+
+    <div id="app">
+        <!-- 발생된 이벤트로 인해 전송되는 데이터를 받는 부모 -->
+        <child-com v-on:event-name="viewData"></child-com>
+        <div>{{message}}</div>
+    </div>
+
+
+    <script>
+        Vue.component("child-com",{
+            template:`
+                <button v-on:click="showLog">버튼</button>
+            `,
+            methods:{
+                showLog:function(){
+                    //부모에게 데이터 제공 로직
+                    //(이벤트명, 데이터)
+                    this.$emit('event-name', 'child가 제공하는 데이터');
+                }
+            }
+        })
+
+        new Vue({
+            el:"#app",
+            //자식이 제공해주는 데이터를 받는 변수  (property, model) 선언
+            data:{
+                message:'부모데이터'
+            },
+            methods:{
+                viewData: function(v){
+                    this.message=v;
+                }
+            }
+        })
+
+    </script>
+<br><br><br><br>
+    <div id="app2">
+        <my-com v-on:colorpick="colorize"></my-com>
+        <br><br><div align=right>현재 색 : {{color.replace("background-color:","")}}</div>
+        <div :style="color"><br><br><br><br><br><br><div align=center><h2>원정 토토 환영</h2></div><br><br><br><br><br><br></div>
+    </div>
+
+    <script>
+        Vue.component('my-com',{
+            template:`<div align=center>
+            <button v-on:click="changeColor" style="width:200px">토토허쉴?</button>
+            </div>`,
+            methods:{
+                changeColor:function(){
+                    setInterval(()=>{this.$emit('colorpick','#'+Math.floor(Math.random()*Math.pow(16, 6)).toString(16))},200)
+                }
+            }
+        })
+        new Vue({
+            el:"#app2",
+            data:{
+                color:""
+            },
+            methods:{
+                colorize:function(v){
+                    this.color="background-color:"+v;
+                    console.log(this.color);
+                }
+            }
+
+        })
+    </script>
+</body>
+</html>

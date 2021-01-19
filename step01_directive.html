@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+
+    <h2>[1] v-bind</h2>
+    1. element의 속성에 binding 하기 위한 속성<br>
+    2. 이미지 tag의 속성 + input tag의 속성에 적용 <br>
+    3. 함축 표현식 - v-bind 생략해도 동일한 binding 작업 <br>
+    <div id="app">
+        <img :src="imgSrc"><br>
+        <input type="text" :value="message"><br>
+
+        <!-- ? 링크 클릭하면 google로 이동, href 속성에 binding-->
+
+        <a :href="link" target="_blank"> 방구야~ </a>
+    </div>
+
+
+    <script>
+        var model = {
+            message : "v-bind directive",
+            imgSrc : "images/lion.png",
+            link : "http://www.google.com"
+        }
+
+        let vm = new Vue({
+            el : "#app",
+            data : model
+        });
+
+    </script>
+    <br><hr><br>
+    <h2>[2] v-model</h2>
+
+    1. html 요소에서 양방향 바인딩 작업 가능 <br>
+    2. 이름을 입력하면 특정 div tag에 값이 출력<br>
+    <div id="app2">
+
+        <input type="text" v-model="name" placeholder="이름 입력"><br>
+        이름  : <span v-text="name"></span>
+    </div>
+    <script>
+        let vm2 = new Vue({
+            el : "#app2",
+            data : {
+                    name : ""
+            }
+        });
+    </script>
+
+
+    <br><hr><br>
+    <h2>[3] v-model review</h2>
+    <div id="app3">
+        <select name="cars" id="cars" v-model="car">
+            <option value="volvo">Volvo</option>
+            <option value="saab">Saab</option>
+            <option value="mercedes">Mercedes</option>
+            <option value="audi">Audi</option>
+          </select>
+          <br>
+          <span v-text="car"></span> - <span v-html>{{car}}</span>
+    </div> 
+        <script>
+            //? select tag에서 선택한 데이터값을 보유
+            let model3 = {car : ""};
+            let vm3 = new Vue({
+                    el :"#app3",
+                    data : model3
+            });
+        </script>
+    <br><hr><br>
+
+    <!-- ? 체크박스는 다중 선택[배열?]이 가능한 기질 - 선택된 모든 checkbox의 내용을 
+            id="app4view" span tag에서 출력
+            backEnd에서 checkBox의 데이터를 획득하는 메소드
+            String [] all = request.getParameterValues("checkbox의 name 속성값");
+            id 속성 : java script 상에서 tag 구분을 위한 고유한 속성
+            name 속성 : backEnd에서 데이터를 획득하기 위한 속성
+
+            checkbox와 select의 multiple의 경우 선택된 데이터값을 모델 객체의 배열과 연관
+        -->
+    <div id="app4">
+        <input type="checkbox" id="vehicle1" name="vehicle" value="Bike" v-model="vehicle">
+        <label for="vehicle1"> I have a bike</label><br>
+        <input type="checkbox" id="vehicle2" name="vehicle" value="Car" v-model="vehicle">
+        <label for="vehicle2"> I have a car</label><br>
+        <input type="checkbox" id="vehicle3" name="vehicle" value="Boat" v-model="vehicle">
+        <label for="vehicle3"> I have a boat</label><br>
+        
+    </div>
+    <span id="app4view" v-text="vehicle"> </span>
+
+    <script>
+        let model4 = {vehicle : []};
+        let vm4 = new Vue({
+            el : "#app4",
+            data : model4
+        });
+
+        let vm42 = new Vue({
+            el : "#app4view",
+            data : model4 
+        });
+
+    </script>
+
+</body>
+</html>

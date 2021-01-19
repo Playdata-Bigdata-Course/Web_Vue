@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>step08_filter</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <h2>Vue instance의 filters 라는 필터링 기능의 속성</h2>
+    <div id="app">
+        자동 연산 작업 - 입력된 데이터에 10을 더하기 <br>
+        <input type="text" v-model.number="age">준호양이 떡국10번더먹으면?
+        {{age | sum | sum2}}
+    </div>
+    <script>
+        let vm = new Vue({
+            el : "#app",
+            data : {
+                age : 0
+            },
+            filters : {
+                sum : function(v){
+                    return v+ 10;
+                },
+                sum2 : function(v){
+                    return v+ 100;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

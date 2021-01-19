@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        1. 이상형{{character | ideal}} <br>
+        2. 평균나이{{avgAGE}} <br>
+        3. 여성의 숫자는?{{countFemale()}} <br>
+    </div>
+    <script>
+        let model = {
+           character: [
+                { "name": "유진초이", "age": 50, "sex": "male", "birthdate": 1871 },
+                { "name": "고애신", "age": 34, "sex": "female", "birthdate": 1887 },
+                { "name": "구동매", "age": 35, "sex": "male", "birthdate": 1886 },
+                { "name": "김희성", "age": 36, "sex": "male", "birthdate": 1875 },
+                { "name": "쿠도히나", "age": 41, "sex": "female", "birthdate": 1880 }
+            ]
+       };
+
+       let vm = new Vue({
+           el : "#app",
+           data : model,
+            filters : {
+                    ideal : function(v){
+                       for(let people of v){
+                           if(people.name == "유진초이"){
+                               return people;
+                           }
+                       } 
+                    }
+                },
+            computed : {
+                avgAGE : {
+                    get : function(){
+                        let sumAGE=0;
+                        for (let people of this.character){
+                                sumAGE += people.age;
+                            }
+                         return sumAGE/this.character.length;
+                        }
+                    }
+                },
+            methods : {
+                countFemale : function(){
+                    let num=0;
+                    for (let people of this.character){
+                        if(people.sex == "female"){
+                            num +=1;
+                        }
+                    }
+                    return num;
+                }
+            } 
+       });
+    </script>
+
+
+
+
+
+</body>
+
+</html>
+
+<!-- review + 작품 완성 : 개인, 5시 40분까지 제출
+    - 이름.txt:쉼이 필요한 하루...
+
+양호준, 고은비, 박민영 작품
+이상형 - 유진초이
+[
+{ "name": "유진초이", "age": 50, "sex": "male", "birthdate": 1871 },
+{ "name": "고애신", "age": 34, "sex": "female", "birthdate": 1887 },
+{ "name": "구동매", "age": 35, "sex": "male", "birthdate": 1886 },
+{ "name": "김희성", "age": 36, "sex": "male", "birthdate": 1875 },
+{ "name": "쿠도히나", "age": 41, "sex": "female", "birthdate": 1880 }
+]
+1. 제시된 데이터를 기반으로 해서 화면에는 filtering으로 이상형만 출력
+2. 모든 캐릭터들의 평균 나이 구하기
+3. 여성 몇명?
+
+메소드 - 구현 후 호출시 () 표기 필수, 호출시에 무조건 실행 
+computed - 구현 후 호출시에 속성명 호출하듯 호출, 첫 호출시 브라우저 캐시에 실행 결과 저장, 
+            두번째 호출시 값 변경이 안 되어 있을 경우 캐시 메모리 데이터 활용
+filters - 호출 문법 자체가 | 연산자로 호출
+        {{데이터 | 필터함수1 | 필터함수2 ...}}
+
+    메소드 체이닝 기법으로 다수의 메소드를 순차적으로 호출하고자 한다면 filters 활용 권장 -->

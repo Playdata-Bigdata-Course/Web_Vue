@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>step23_router</title>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <div id="app">
+        <h1>Hello App!</h1>
+        <p>
+            <!-- 네비게이션을 위해 router-link 컴포넌트를 사용합니다. -->
+            <!-- 구체적인 속성은 `to` prop을 이용합니다. -->
+            <!-- 기본적으로 `<router-link>`는 `<a>` 태그로 렌더링됩니다.-->
+            <router-link to="/foo">Go to Foo</router-link>
+            <router-link to="/bar">Go to Bar</router-link>
+            <router-link to="/name">Go to Comet</router-link>
+            <router-link to="/tabledata">Go to TableData</router-link>
+            <router-link to="/emp">Go to Emp</router-link>
+        </p>
+
+        <!-- 라우트 아울렛 -->
+        <!-- 현재 라우트에 맞는 컴포넌트가 렌더링됩니다. -->
+        <router-view></router-view>
+    </div>
+</body>
+<script>
+    //추가미션 - 버튼 클릭하면 서버의 dept등의 table들 select 해서 화면에 table구조 출력하기 
+    //v-on directive로 호출 불가
+   
+    //router라는 기술로 개발되는 각각의 component들을 개별 객체들로 간주
+    //app id값을 보유한 view기반의 Vue instance 내부의 함수가 아닌 개별 객체 단위로 구성되는 함수에 대한 이벤트 처리만 가능
+    //Name이 보유한 js객체 내부의 methods만 name url에 매핑된 router-link 영역에서 사용 가능
+    //렌더링 시 a 앵커tag로 간주 즉 화면이 마치 여러개인듯한 처리 하기 때문에
+    const Foo = { template: '<div>김준형</div>' }
+    const Bar = { template: '<div>양호준</div>' }
+    // 본인 이름 출력되는 name 변수를 선언
+    const Name = {
+        template: '<div><button v-on:click="myfun">김혜성</button></div>',
+        methods: {
+            myfun: function myFun() {
+                alert(1);
+            }
+        },
+
+    }
+    const Emp = {
+        template: ` <div id="app2">
+                        <button v-on:click="getData">click</button>
+                        <div>
+                            <table border=1>
+                                <tr><th>EmployeeId</th><th>firstName</th><th>lastName</th><th>email</th><th>phoneNumber</th><th>hireDate</th><th>jobId</th><th>salary</th><th>commissionPct</th><th>managerId</th><th>departmentId</th></tr>
+                                <tr v-for="(val, key) in emp">
+                                    <td>{{ val.employee_id }}</td><td>{{ val.first_name }}</td><td>{{ val.last_name }}</td><td>{{ val.email }}</td><td>{{ val.phone_number }}</td><td>{{ val.hire_date }}</td><td>{{ val.job_id }}</td><td>{{ val.salary }}</td><td>{{ val.commission_pct }}</td><td>{{ val.manager_id }}</td><td>{{ val.department_id }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                     </div>`,
+        methods: {
+            getData: function getData() {
+                axios.get('http://localhost/step11_BackLogic/index.jsp')
+                    .then(function (response) {
+                        for (let val in response.data) {
+                            model.emp.push(response.data[val]);
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            }
+        }
+    }
+    const TableData = {
+        template: `<table>
+            <tr>
+                <th>Company</th>
+                <th>Contact</th>
+                <th>Country</th>
+            </tr>
+            <tr>
+                <td>Alfreds Futterkiste</td>
+                <td>Maria Anders</td>
+                <td>Germany</td>
+            </tr>
+            <tr>
+                <td>Centro comercial Moctezuma</td>
+                <td>Francisco Chang</td>
+                <td>Mexico</td>
+            </tr>
+            <tr>
+                <td>Ernst Handel</td>
+                <td>Roland Mendel</td>
+                <td>Austria</td>
+            </tr>
+            <tr>
+                <td>Island Trading</td>
+                <td>Helen Bennett</td>
+                <td>UK</td>
+            </tr>
+            <tr>
+                <td>Laughing Bacchus Winecellars</td>
+                <td>Yoshi Tannamuri</td>
+                <td>Canada</td>
+            </tr>
+            <tr>
+                <td>Magazzini Alimentari Riuniti</td>
+                <td>Giovanni Rovelli</td>
+                <td>Italy</td>
+            </tr>
+        </table>`
+    }
+    const routes = [
+        { path: '/foo', component: Foo },
+        { path: '/bar', component: Bar },
+        { path: '/name', component: Name },
+        { path: '/tabledata', component: TableData },
+        { path: '/emp', component: Emp }
+    ]
+
+    const router = new VueRouter({
+        routes // `routes: routes`의 줄임
+    })
+
+    // const app = new Vue({
+    //   router
+    // }).$mount('#app')
+    const model = {
+            emp: []
+    }
+    const app = new Vue({
+        el: "#app",
+        router,
+        data: model
+    });
+  
+</script>
+
+</html>
