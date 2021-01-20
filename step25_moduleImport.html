@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>step25_moduleImport</title>
+</head>
+<body>
+    <script type="module">
+        import {sayHi} from './step25_moduleExport.js';
+        
+        document.body.innerHTML = sayHi('John');
+        console.log(sayHi);
+    </script>
+    
+</body>
+
+</html>

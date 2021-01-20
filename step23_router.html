@@ -68,9 +68,8 @@
         },
 
     }
-    const Emp = {
+    const emp = {
         template: ` <div id="app2">
-                        <button v-on:click="getData">click</button>
                         <div>
                             <table border=1>
                                 <tr><th>EmployeeId</th><th>firstName</th><th>lastName</th><th>email</th><th>phoneNumber</th><th>hireDate</th><th>jobId</th><th>salary</th><th>commissionPct</th><th>managerId</th><th>departmentId</th></tr>
@@ -80,19 +79,7 @@
                             </table>
                         </div>
                      </div>`,
-        methods: {
-            getData: function getData() {
-                axios.get('http://localhost/step11_BackLogic/index.jsp')
-                    .then(function (response) {
-                        for (let val in response.data) {
-                            model.emp.push(response.data[val]);
-                        }
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    })
-            }
-        }
+        
     }
     const TableData = {
         template: `<table>
@@ -138,7 +125,7 @@
         { path: '/bar', component: Bar },
         { path: '/name', component: Name },
         { path: '/tabledata', component: TableData },
-        { path: '/emp', component: Emp }
+        { path: '/emp', component: emp }
     ]
 
     const router = new VueRouter({
@@ -148,13 +135,22 @@
     // const app = new Vue({
     //   router
     // }).$mount('#app')
-    const model = {
-            emp: []
-    }
+    const model = {emp: []};
+    (()=> {
+        const tempmodel ={};
+        axios.get('http://localhost/step11_BackLogic/index.jsp')
+                    .then(function (response) {
+                        model.emp=(response.data[val]);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+                    return tempmodel;
+    })();
+           
     const app = new Vue({
         el: "#app",
         router,
-        data: model
     });
   
 </script>
