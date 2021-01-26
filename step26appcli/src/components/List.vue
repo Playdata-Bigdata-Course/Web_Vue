@@ -46,30 +46,34 @@ ul li.checked {
 
 <template>
   <ul>
-    <li v-for="task in languagelist" :key="task.id" v-bind:class="checked(task.lang)" v-on:click="langToggle(task.id)">
+    <li
+      v-for="task in languagelist"
+      :key="task.id"
+      v-bind:class="checked(task.lang)"
+      v-on:click="langToggle(task.id)"
+    >
       <span>{{ task.language }}</span>
       <span v-if="task.lang"> (완료)</span>
 
-      <span class="close" v-on:click.stop="deletelanguage(task.id)">&#x00D7;</span>
+      <span class="close" v-on:click.stop="deletelanguage(task.id)"
+        >&#x00D7;</span
+      >
     </li>
   </ul>
 </template>
 
 <script>
-import eventBus from '../EventBus'
+import eventBus from "../EventBus";
+import Constant from "../js/Constant.js";
+import Vuex from "../js/myVueStore.js";
 export default {
-    name: 'List',
-    created: function () {
+  name: "List",
+  created: function () {
     eventBus.$on("add-language", this.addlanguage);
   },
   data: function () {
     return {
-      languagelist: [
-        { id: 1, language: "Python", lang: false },
-        { id: 2, language: "Java", lang: true },
-        { id: 3, language: "JavaScript", lang: false },
-        { id: 4, language: "SQL", lang: false },
-      ],
+      languagelist: Vuex.state.languagelist,
     };
   },
 
@@ -81,26 +85,14 @@ export default {
         return { checked: false };
       }
     },
-    addlanguage: function (language) {
-      if (language !== "") {
-        this.languagelist.push({
-          id: new Date().getTime(),
-          language: language,
-          lang: false,
-        });
-      }
+    addlanguage: function (payload) {
+      Vuex.commit(Constant.ADDLANGUAGE, payload);
     },
-    langToggle: function (id) {
-      let index = this.languagelist.findIndex(function (item) {
-        return item.id === id;
-      });
-      this.languagelist[index].lang = !this.languagelist[index].lang;
+    langToggle: function (payload) {
+      Vuex.commit(Constant.LANGUAGETOGGLE, payload);
     },
-    deletelanguage: function (id) {
-      var index = this.languagelist.findIndex(function (item) {
-        return item.id === id;
-      });
-      this.languagelist.splice(index, 1);
+    deletelanguage: function (payload) {
+      Vuex.commit(Constant.DELETELANGUAGE, payload);
     },
   },
 };

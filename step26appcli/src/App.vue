@@ -31,11 +31,11 @@
 </template>
 
 <script>
-import inputC from './Input.vue';
-import list from './List.vue';
+import inputC from './components/Input.vue';
+import list from './components/List.vue';
 
 export default {
-    name: 'LanguageList',
+    name: 'App',
     components:{inputC, list}
 };
 </script>

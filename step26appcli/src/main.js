@@ -1,8 +1,8 @@
 import Vue from 'vue'
-import LanguageList from './components/LanguageList.vue'
+import App from './App.vue'
 
 Vue.config.productionTip = false
 
 new Vue({
-  render: h => h(LanguageList),
+  render: h => h(App),
 }).$mount('#app')
